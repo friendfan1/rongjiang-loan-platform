@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="榕江县小微企业金融服务信贷平台 - 银行信贷产品查询">
+  <title>榕江县小微企业金融服务信贷平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/rjlogo.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <a class="brand-logo-wrap" href="https://www.rongjiang.gov.cn/" target="_blank" rel="noopener noreferrer" title="榕江县人民政府">
+          <img class="brand-logo" src="assets/images/rjlogo.png" alt="榕江县人民政府" width="220" height="72">
+        </a>
+        <div class="header-text">
+          <h1 id="site-title">榕江县小微企业金融服务信贷平台</h1>
+          <p id="site-subtitle" class="subtitle">汇集榕江县银行机构小微企业信贷产品，按区县、银行、产品分类、担保方式、融资额度和贷款期限快速查询。</p>
+        </div>
+      </div>
+      <div class="header-stats" id="header-stats" aria-label="平台统计"></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="search-panel" aria-label="产品筛选">
+      <div class="search-row">
+        <label class="search-label" for="keyword">关键词</label>
+        <input type="search" id="keyword" class="search-input" placeholder="搜索产品名称、银行、服务对象…" autocomplete="off">
+        <button type="button" class="btn btn-primary" id="btn-search">搜索</button>
+        <button type="button" class="btn btn-ghost" id="btn-reset">重置</button>
+      </div>
+
+      <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="false">
+        <span id="filter-toggle-text">展开更多筛选</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11L3 6h10l-5 5z"/></svg>
+      </button>
+
+      <div class="filter-panel" id="filter-panel" hidden>
+        <div class="filter-group" data-filter="region">
+          <span class="filter-label">适用县区</span>
+          <div class="filter-options" id="filter-region"></div>
+        </div>
+        <div class="filter-group" data-filter="bank">
+          <span class="filter-label">银行机构</span>
+          <div class="filter-options" id="filter-bank"></div>
+        </div>
+        <div class="filter-group" data-filter="category">
+          <span class="filter-label">产品分类</span>
+          <div class="filter-options" id="filter-category"></div>
+        </div>
+        <div class="filter-group" data-filter="guarantee">
+          <span class="filter-label">担保方式</span>
+          <div class="filter-options" id="filter-guarantee"></div>
+        </div>
+        <div class="filter-group" data-filter="amount">
+          <span class="filter-label">融资额度</span>
+          <div class="filter-options" id="filter-amount"></div>
+        </div>
+        <div class="filter-group" data-filter="term">
+          <span class="filter-label">贷款期限</span>
+          <div class="filter-options" id="filter-term"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="result-bar">
+      <span id="result-summary">正在加载产品…</span>
+    </div>
+
+    <section class="product-list" id="product-list" aria-label="信贷产品列表"></section>
+
+    <nav class="pagination" id="pagination" aria-label="分页"></nav>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footer-text">榕江县小微企业金融服务信贷平台</p>
+    <p class="footer-stats">
+      本站总访问量 <span id="busuanzi_site_pv">—</span> 次 ·
+      访客数 <span id="busuanzi_site_uv">—</span> 人 ·
+      本页访问量 <span id="busuanzi_page_pv">—</span> 次
+    </p>
+    <p class="footer-meta">
+      主办：榕江县人民政府 ·
+      <a href="https://www.rongjiang.gov.cn/" target="_blank" rel="noopener noreferrer">榕江县人民政府网</a>
+    </p>
+  </footer>
+
+  <dialog class="detail-modal" id="detail-modal" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button type="button" class="modal-close" id="modal-close" aria-label="关闭">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </dialog>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script src="assets/js/analytics.js"></script>
+</body>
+</html>
