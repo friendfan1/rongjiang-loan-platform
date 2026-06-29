@@ -69,7 +69,7 @@
     footerText: document.getElementById("footer-text"),
     modal: document.getElementById("detail-modal"),
     modalTitle: document.getElementById("modal-title"),
-    modalBank: document.getElementById("modal-bank"),
+    modalBankRow: document.getElementById("modal-bank-row"),
     modalBadges: document.getElementById("modal-badges"),
     modalMetrics: document.getElementById("modal-metrics"),
     modalBody: document.getElementById("modal-body"),
@@ -147,6 +147,48 @@
     state.page = 1;
   }
 
+  function bankStyle(bankName) {
+    const bank = resolveBank(bankName);
+    return bank ? `--bank-color:${bank.color}` : "";
+  }
+
+  function bankShortName(bankName) {
+    const bank = resolveBank(bankName);
+    return bank ? bank.shortName : bankName;
+  }
+
+  function renderBankPartners() {
+    const banks = state.data.meta.filters?.banks || [];
+    if (!banks.length) return;
+
+    els.bankPartners = document.getElementById("bank-partners");
+    if (!els.bankPartners) return;
+
+    els.bankPartners.innerHTML = `
+      <p class="bank-partners-label">合作银行</p>
+      <div class="bank-partners-track">
+        ${banks
+          .map((name) => {
+            const bank = resolveBank(name);
+            const color = bank ? bank.color : "var(--blue-700)";
+            return `<button type="button" class="bank-partner-item" style="--bank-color:${color}" data-bank="${escapeHtml(name)}" title="${escapeHtml(name)}">
+              ${renderBankLogo(name, "bank-partner-logo", bankShortName(name))}
+            </button>`;
+          })
+          .join("")}
+      </div>`;
+
+    els.bankPartners.querySelectorAll(".bank-partner-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setFilter("bank", btn.dataset.bank);
+        els.filterToggle.setAttribute("aria-expanded", "true");
+        els.filterPanel.hidden = false;
+        els.filterToggleText.textContent = "收起更多筛选";
+        document.querySelector(".search-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
   function buildFilterChips(container, options, filterKey, withAllLabel) {
     container.innerHTML = "";
     const allBtn = document.createElement("button");
@@ -158,12 +200,22 @@
     container.appendChild(allBtn);
 
     options.forEach((opt) => {
+      const value = opt.key || opt;
+      const label = opt.label || opt;
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "filter-chip";
-      btn.textContent = opt.label || opt;
-      btn.dataset.value = opt.key || opt;
-      btn.addEventListener("click", () => setFilter(filterKey, opt.key || opt));
+      btn.className = "filter-chip" + (filterKey === "bank" ? " filter-chip-bank" : "");
+      btn.dataset.value = value;
+
+      if (filterKey === "bank") {
+        const bank = resolveBank(value);
+        if (bank) btn.style.setProperty("--bank-color", bank.color);
+        btn.innerHTML = `${renderBankLogo(value, "filter-bank-logo", bankShortName(value))}<span class="filter-chip-text">${escapeHtml(bankShortName(value))}</span>`;
+      } else {
+        btn.textContent = label;
+      }
+
+      btn.addEventListener("click", () => setFilter(filterKey, value));
       container.appendChild(btn);
     });
   }
@@ -198,6 +250,7 @@
       `<span class="stat-chip"><strong>${stats.products || state.products.length}</strong> 信贷产品</span>`,
       `<span class="stat-chip"><strong>${stats.banks || meta.filters?.banks?.length || 0}</strong> 银行机构</span>`,
     ].join("");
+    renderBankPartners();
   }
 
   function renderFilters() {
@@ -231,18 +284,23 @@
     els.productList.innerHTML = pageItems
       .map((p) => {
         const desc = p.target || p.conditions || "";
+        const style = bankStyle(p.bank);
         return `
-          <article class="product-card" data-id="${escapeHtml(p.id)}">
+          <article class="product-card" data-id="${escapeHtml(p.id)}" style="${style}">
+            <div class="card-accent" aria-hidden="true"></div>
+            <div class="card-bank-row">
+              ${renderBankLogo(p.bank, "card-bank-logo", bankShortName(p.bank))}
+              <span class="card-bank-name">${escapeHtml(bankShortName(p.bank))}</span>
+            </div>
             <div class="card-header">
               <h2 class="card-title">${escapeHtml(p.name)}</h2>
               ${p.category ? `<span class="card-badge">${escapeHtml(p.category)}</span>` : ""}
             </div>
-            <div class="card-bank">${escapeHtml(p.bank)}</div>
             ${desc ? `<p class="card-desc">${escapeHtml(desc)}</p>` : ""}
             <div class="card-meta">
-              ${p.amount ? `<span>最高额度 <strong>${escapeHtml(p.amount)}</strong></span>` : ""}
-              ${p.rate ? `<span>参考利率 <strong>${escapeHtml(p.rate)}</strong></span>` : ""}
-              ${p.term ? `<span>贷款期限 <strong>${escapeHtml(p.term)}</strong></span>` : ""}
+              ${p.amount ? `<div class="card-meta-item"><span class="card-meta-label">额度</span><strong>${escapeHtml(p.amount)}</strong></div>` : ""}
+              ${p.rate ? `<div class="card-meta-item"><span class="card-meta-label">利率</span><strong>${escapeHtml(p.rate)}</strong></div>` : ""}
+              ${p.term ? `<div class="card-meta-item"><span class="card-meta-label">期限</span><strong>${escapeHtml(p.term)}</strong></div>` : ""}
             </div>
             <div class="card-footer">
               <button type="button" class="btn-detail" data-id="${escapeHtml(p.id)}">查看详情</button>
@@ -320,7 +378,15 @@
     if (!p) return;
 
     els.modalTitle.textContent = p.name;
-    els.modalBank.textContent = p.bank || "";
+    els.modalBankRow.innerHTML = `
+      ${renderBankLogo(p.bank, "modal-bank-logo", bankShortName(p.bank))}
+      <div class="modal-bank-text">
+        <span class="modal-bank-short">${escapeHtml(bankShortName(p.bank))}</span>
+        <span class="modal-bank-full">${escapeHtml(p.bank || "")}</span>
+      </div>`;
+    if (resolveBank(p.bank)) {
+      els.modalBankRow.style.setProperty("--bank-color", resolveBank(p.bank).color);
+    }
 
     const badges = [];
     if (p.category) badges.push(`<span class="modal-badge">${escapeHtml(p.category)}</span>`);

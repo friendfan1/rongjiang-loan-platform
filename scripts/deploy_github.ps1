@@ -1,6 +1,5 @@
 param(
-    [Parameter(Mandatory = $true)]
-    [string] $GithubUser,
+    [string] $GithubUser = "friendfan1",
 
     [string] $RepoName = "rongjiang-loan-platform"
 )
