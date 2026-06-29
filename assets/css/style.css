@@ -731,8 +731,141 @@ body {
     height: 42px;
   }
 
+  .site-header {
+    padding: 20px 16px 24px;
+  }
+
+  #site-title {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .main-content {
+    padding: 16px 12px 40px;
+  }
+
+  .search-panel {
+    padding: 16px;
+  }
+
+  .product-card {
+    padding: 16px;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+  }
+
+  .card-meta {
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  /* 详情弹窗：接近全屏，优先展示产品说明 */
+  .detail-modal {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .modal-inner {
+    max-height: 100dvh;
+  }
+
+  .modal-header {
+    padding: 14px 16px 12px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .modal-bank {
+    font-size: 13px;
+  }
+
+  .modal-metrics {
+    padding: 0 16px;
+  }
+
+  /* 指标横排紧凑展示，不占大面积 */
   .metric-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 10px 0 12px;
+  }
+
+  .metric-card {
+    padding: 8px 4px;
+    border-radius: 8px;
+  }
+
+  .metric-icon {
+    display: none;
+  }
+
+  .metric-label {
+    font-size: 11px;
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+
+  .metric-value {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .modal-body {
+    padding: 14px 16px max(20px, env(safe-area-inset-bottom));
+    flex: 1;
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .detail-section {
+    margin-bottom: 18px;
+  }
+
+  .detail-section-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding-left: 8px;
+  }
+
+  .detail-info-item {
+    padding: 14px 16px;
+  }
+
+  .detail-label {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .detail-value {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .detail-text,
+  .detail-steps {
+    font-size: 15px;
+    line-height: 1.75;
+    padding: 14px 16px;
+  }
+
+  .detail-steps {
+    padding-left: 28px;
+  }
+
+  .contact-value {
+    font-size: 17px;
   }
 
   .search-row {
