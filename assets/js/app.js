@@ -3,6 +3,7 @@
 
   const PAGE_SIZE = 9;
   const DATA_URL = "data/products.json";
+  const ORGANIZER = "国家金融监督管理总局榕江监管支局";
 
   const AMOUNT_BUCKETS = [
     { key: "all", label: "不限" },
@@ -38,7 +39,6 @@
     filtered: [],
     filters: {
       keyword: "",
-      region: "all",
       bank: "all",
       category: "all",
       guarantee: "all",
@@ -58,7 +58,6 @@
     filterToggle: document.getElementById("filter-toggle"),
     filterToggleText: document.getElementById("filter-toggle-text"),
     filterPanel: document.getElementById("filter-panel"),
-    filterRegion: document.getElementById("filter-region"),
     filterBank: document.getElementById("filter-bank"),
     filterCategory: document.getElementById("filter-category"),
     filterGuarantee: document.getElementById("filter-guarantee"),
@@ -70,6 +69,9 @@
     footerText: document.getElementById("footer-text"),
     modal: document.getElementById("detail-modal"),
     modalTitle: document.getElementById("modal-title"),
+    modalBank: document.getElementById("modal-bank"),
+    modalBadges: document.getElementById("modal-badges"),
+    modalMetrics: document.getElementById("modal-metrics"),
     modalBody: document.getElementById("modal-body"),
     modalClose: document.getElementById("modal-close"),
   };
@@ -120,7 +122,6 @@
   function applyFilters() {
     const kw = state.filters.keyword.trim().toLowerCase();
     state.filtered = state.products.filter((p) => {
-      if (state.filters.region !== "all" && p.region !== state.filters.region) return false;
       if (state.filters.bank !== "all" && p.bank !== state.filters.bank) return false;
       if (state.filters.category !== "all" && p.category !== state.filters.category) return false;
       if (!matchGuarantee(p.guarantee, state.filters.guarantee)) return false;
@@ -170,7 +171,6 @@
   function setFilter(filterKey, value) {
     state.filters[filterKey] = value;
     const groupMap = {
-      region: els.filterRegion,
       bank: els.filterBank,
       category: els.filterCategory,
       guarantee: els.filterGuarantee,
@@ -197,13 +197,11 @@
     els.headerStats.innerHTML = [
       `<span class="stat-chip"><strong>${stats.products || state.products.length}</strong> 信贷产品</span>`,
       `<span class="stat-chip"><strong>${stats.banks || meta.filters?.banks?.length || 0}</strong> 银行机构</span>`,
-      `<span class="stat-chip"><strong>${stats.regions || meta.filters?.regions?.length || 0}</strong> 适用县区</span>`,
     ].join("");
   }
 
   function renderFilters() {
     const f = state.data.meta.filters || {};
-    buildFilterChips(els.filterRegion, f.regions || [], "region");
     buildFilterChips(els.filterBank, f.banks || [], "bank");
     buildFilterChips(els.filterCategory, f.categories || [], "category");
     buildFilterChips(els.filterGuarantee, GUARANTEE_TYPES.slice(1), "guarantee", "全部");
@@ -247,7 +245,6 @@
               ${p.term ? `<span>贷款期限 <strong>${escapeHtml(p.term)}</strong></span>` : ""}
             </div>
             <div class="card-footer">
-              <span class="card-region">适用县区：${escapeHtml(p.region || "—")}</span>
               <button type="button" class="btn-detail" data-id="${escapeHtml(p.id)}">查看详情</button>
             </div>
           </article>
@@ -307,40 +304,75 @@
     renderPagination();
   }
 
+  function formatProcessSteps(process) {
+    if (!process) return "";
+    const steps = process.split(/[,，、]/).map((s) => s.trim()).filter(Boolean);
+    if (steps.length <= 1) {
+      return `<p class="detail-text">${escapeHtml(process)}</p>`;
+    }
+    return `<ol class="detail-steps">${steps
+      .map((step) => `<li>${escapeHtml(step)}</li>`)
+      .join("")}</ol>`;
+  }
+
   function openDetail(id) {
     const p = state.products.find((item) => String(item.id) === String(id));
     if (!p) return;
 
     els.modalTitle.textContent = p.name;
-    const rows = [
-      ["银行机构", p.bank],
-      ["产品分类", p.category],
+    els.modalBank.textContent = p.bank || "";
+
+    const badges = [];
+    if (p.category) badges.push(`<span class="modal-badge">${escapeHtml(p.category)}</span>`);
+    if (p.guarantee) badges.push(`<span class="modal-badge modal-badge-outline">${escapeHtml(p.guarantee)}</span>`);
+    els.modalBadges.innerHTML = badges.join("");
+
+    const metrics = [
+      { label: "融资额度", value: p.amount, icon: "额" },
+      { label: "年利率", value: p.rate, icon: "率" },
+      { label: "贷款期限", value: p.term, icon: "期" },
+    ].filter((m) => m.value);
+
+    els.modalMetrics.innerHTML = metrics.length
+      ? `<div class="metric-grid">${metrics
+          .map(
+            (m) =>
+              `<div class="metric-card"><span class="metric-icon" aria-hidden="true">${m.icon}</span><span class="metric-label">${escapeHtml(m.label)}</span><span class="metric-value">${escapeHtml(m.value)}</span></div>`
+          )
+          .join("")}</div>`
+      : "";
+
+    const infoRows = [
       ["服务对象", p.target],
       ["申请条件", p.conditions],
-      ["适用县区", p.region],
-      ["担保方式", p.guarantee],
-      ["融资额度", p.amount],
-      ["贷款期限", p.term],
-      ["年利率", p.rate],
-      ["申请流程", p.process],
-      ["联系人及电话", p.contact],
-    ];
+    ].filter(([, val]) => val);
 
-    els.modalBody.innerHTML = rows
-      .filter(([, val]) => val)
-      .map(
-        ([label, val]) =>
-          `<div class="detail-row"><div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(val)}</div></div>`
-      )
-      .join("");
+    let bodyHtml = "";
 
+    if (infoRows.length) {
+      bodyHtml += `<section class="detail-section"><h3 class="detail-section-title">产品说明</h3><div class="detail-info-grid">${infoRows
+        .map(
+          ([label, val]) =>
+            `<div class="detail-info-item"><span class="detail-label">${escapeHtml(label)}</span><span class="detail-value">${escapeHtml(val)}</span></div>`
+        )
+        .join("")}</div></section>`;
+    }
+
+    if (p.process) {
+      bodyHtml += `<section class="detail-section"><h3 class="detail-section-title">申请流程</h3>${formatProcessSteps(p.process)}</section>`;
+    }
+
+    if (p.contact) {
+      bodyHtml += `<section class="detail-section detail-contact"><h3 class="detail-section-title">联系咨询</h3><div class="contact-box"><span class="contact-icon" aria-hidden="true">☎</span><div class="contact-content"><span class="contact-label">联系人及电话</span><span class="contact-value">${escapeHtml(p.contact)}</span></div></div></section>`;
+    }
+
+    els.modalBody.innerHTML = bodyHtml || `<p class="detail-empty">暂无更多详情信息。</p>`;
     els.modal.showModal();
   }
 
   function resetFilters() {
     state.filters = {
       keyword: "",
-      region: "all",
       bank: "all",
       category: "all",
       guarantee: "all",
@@ -390,6 +422,7 @@
       if (!res.ok) throw new Error("数据加载失败");
       state.data = await res.json();
       state.products = state.data.products || [];
+      if (!state.data.meta.organizer) state.data.meta.organizer = ORGANIZER;
       renderHeader();
       renderFilters();
       applyFilters();

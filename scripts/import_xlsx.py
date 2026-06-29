@@ -117,14 +117,14 @@ def build_payload(products: list[dict], source: str) -> dict:
     return {
         "meta": {
             "title": "榕江县小微企业金融服务信贷平台",
-            "subtitle": "汇集榕江县银行机构小微企业信贷产品，按区县、银行、产品分类、担保方式、融资额度和贷款期限快速查询。",
+            "subtitle": "汇集榕江县银行机构小微企业信贷产品，按银行、产品分类、担保方式、融资额度和贷款期限快速查询。",
+            "organizer": "国家金融监督管理总局榕江监管支局",
             "updatedAt": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
             "sourceFile": source,
             "total": len(products),
             "stats": {
                 "products": len(products),
                 "banks": len(banks),
-                "regions": len(regions),
             },
             "filters": {
                 "banks": banks,

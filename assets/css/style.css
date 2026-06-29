@@ -69,25 +69,16 @@ body {
 .brand-logo-wrap {
   flex-shrink: 0;
   display: block;
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 6px 10px;
   line-height: 0;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.brand-logo-wrap:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .brand-logo {
   display: block;
-  width: 220px;
-  height: auto;
-  max-height: 72px;
+  width: auto;
+  max-width: 320px;
+  height: 48px;
   object-fit: contain;
+  object-position: left center;
 }
 
 .header-text {
@@ -359,9 +350,10 @@ body {
 
 .card-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 12px;
+  margin-top: 4px;
 }
 
 .card-region {
@@ -467,64 +459,265 @@ body {
 
 .detail-modal {
   border: none;
-  border-radius: var(--radius);
+  border-radius: 14px;
   padding: 0;
-  max-width: 640px;
+  max-width: 680px;
   width: calc(100% - 32px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 24px 64px rgba(12, 45, 90, 0.28);
   font-family: var(--font-sans);
+  overflow: hidden;
 }
 
 .detail-modal::backdrop {
-  background: rgba(12, 45, 90, 0.45);
+  background: rgba(12, 45, 90, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.modal-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: min(90vh, 720px);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
-  padding: 20px 20px 12px;
+  gap: 16px;
+  padding: 22px 22px 16px;
+  background: linear-gradient(180deg, var(--blue-100) 0%, var(--white) 100%);
   border-bottom: 1px solid var(--border);
 }
 
+.modal-header-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.modal-badge {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--blue-700);
+  color: var(--white);
+  font-weight: 500;
+}
+
+.modal-badge-outline {
+  background: var(--white);
+  color: var(--blue-700);
+  border: 1px solid var(--blue-600);
+}
+
 .modal-header h2 {
-  margin: 0;
+  margin: 0 0 6px;
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
+  line-height: 1.35;
   color: var(--blue-900);
 }
 
+.modal-bank {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
 .modal-close {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: none;
-  background: var(--bg);
-  border-radius: 6px;
+  background: var(--white);
+  border-radius: 8px;
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
   color: var(--text-muted);
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.modal-close:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.modal-metrics {
+  padding: 0 22px;
+  background: var(--white);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px;
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.metric-icon {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 50%;
+  background: var(--blue-700);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-900);
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .modal-body {
-  padding: 16px 20px 24px;
+  padding: 18px 22px 24px;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.detail-row {
-  margin-bottom: 14px;
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.detail-section-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-800);
+  padding-left: 10px;
+  border-left: 3px solid var(--gold);
+}
+
+.detail-info-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-info-item {
+  padding: 12px 14px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
 }
 
 .detail-label {
+  display: block;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .detail-value {
   font-size: 14px;
   line-height: 1.65;
+  color: var(--text);
+}
+
+.detail-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+  padding: 12px 14px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.detail-steps {
+  margin: 0;
+  padding: 12px 14px 12px 32px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.detail-steps li {
+  margin-bottom: 6px;
+}
+
+.detail-steps li:last-child {
+  margin-bottom: 0;
+}
+
+.detail-contact .contact-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 100%);
+  border-radius: 10px;
+  color: var(--white);
+}
+
+.contact-icon {
+  font-size: 22px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.contact-content {
+  flex: 1;
+}
+
+.contact-label {
+  display: block;
+  font-size: 12px;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+.contact-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.detail-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 24px 0;
 }
 
 @media (max-width: 600px) {
@@ -534,8 +727,12 @@ body {
   }
 
   .brand-logo {
-    width: 180px;
-    max-height: 60px;
+    max-width: 100%;
+    height: 42px;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
   }
 
   .search-row {
@@ -544,7 +741,12 @@ body {
   }
 
   .card-footer {
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: stretch;
+  }
+
+  .btn-detail {
+    width: 100%;
+    text-align: center;
+    padding: 10px 14px;
   }
 }

@@ -15,12 +15,12 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="header-brand">
-        <a class="brand-logo-wrap" href="https://www.rongjiang.gov.cn/" target="_blank" rel="noopener noreferrer" title="榕江县人民政府">
-          <img class="brand-logo" src="assets/images/rjlogo.png" alt="榕江县人民政府" width="220" height="72">
-        </a>
+        <div class="brand-logo-wrap" title="国家金融监督管理总局榕江监管支局">
+          <img class="brand-logo" src="assets/images/rjlogo.png" alt="国家金融监督管理总局榕江监管支局">
+        </div>
         <div class="header-text">
           <h1 id="site-title">榕江县小微企业金融服务信贷平台</h1>
-          <p id="site-subtitle" class="subtitle">汇集榕江县银行机构小微企业信贷产品，按区县、银行、产品分类、担保方式、融资额度和贷款期限快速查询。</p>
+          <p id="site-subtitle" class="subtitle">汇集榕江县银行机构小微企业信贷产品，按银行、产品分类、担保方式、融资额度和贷款期限快速查询。</p>
         </div>
       </div>
       <div class="header-stats" id="header-stats" aria-label="平台统计"></div>
@@ -42,10 +42,6 @@
       </button>
 
       <div class="filter-panel" id="filter-panel" hidden>
-        <div class="filter-group" data-filter="region">
-          <span class="filter-label">适用县区</span>
-          <div class="filter-options" id="filter-region"></div>
-        </div>
         <div class="filter-group" data-filter="bank">
           <span class="filter-label">银行机构</span>
           <div class="filter-options" id="filter-bank"></div>
@@ -86,17 +82,23 @@
       本页访问量 <span id="busuanzi_page_pv">—</span> 次
     </p>
     <p class="footer-meta">
-      主办：榕江县人民政府 ·
-      <a href="https://www.rongjiang.gov.cn/" target="_blank" rel="noopener noreferrer">榕江县人民政府网</a>
+      主办：国家金融监督管理总局榕江监管支局
     </p>
   </footer>
 
   <dialog class="detail-modal" id="detail-modal" aria-labelledby="modal-title">
-    <div class="modal-header">
-      <h2 id="modal-title"></h2>
-      <button type="button" class="modal-close" id="modal-close" aria-label="关闭">×</button>
+    <div class="modal-inner">
+      <div class="modal-header">
+        <div class="modal-header-main">
+          <div class="modal-badges" id="modal-badges"></div>
+          <h2 id="modal-title"></h2>
+          <p class="modal-bank" id="modal-bank"></p>
+        </div>
+        <button type="button" class="modal-close" id="modal-close" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-metrics" id="modal-metrics"></div>
+      <div class="modal-body" id="modal-body"></div>
     </div>
-    <div class="modal-body" id="modal-body"></div>
   </dialog>
 
   <script src="assets/js/config.js"></script>
