@@ -42,3 +42,14 @@ git -c http.proxy= -c https.proxy= push github master
 
 - Gitee Pages 已停服，代码可继续备份在 Gitee：`git push gitee master`
 - 若 push 失败且提示连接 127.0.0.1，说明 Clash 代理未开，用上面的 `-c http.proxy=` 方式推送
+
+## Nginx 部署注意
+
+1. **必须上传完整目录**：`index.html`、`assets/`、`data/products.json` 缺一不可
+2. **不要双击打开 HTML**，必须通过 `http://` 访问
+3. 子目录部署时，访问地址建议带尾斜杠，例如 `http://域名/rongjiang-loan/`
+4. 若仍加载失败，在 `assets/js/config.js` 中指定：
+   ```javascript
+   dataUrl: "/rongjiang-loan/data/products.json",
+   ```
+5. 生成数据：`python scripts/import_xlsx.py`
