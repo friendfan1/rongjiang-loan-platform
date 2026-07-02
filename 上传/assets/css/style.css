@@ -15,7 +15,8 @@
   --shadow: 0 4px 20px rgba(12, 45, 90, 0.08);
   --shadow-card: 0 2px 12px rgba(12, 45, 90, 0.06);
   --radius: 12px;
-  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-org: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
   --font-sans: "Noto Sans SC", "PingFang SC", sans-serif;
   --bank-color: var(--blue-700);
 }
@@ -67,52 +68,71 @@ body {
   position: relative;
 }
 
-.header-brand {
-  display: flex;
-  gap: 18px;
+.header-top {
+  margin-bottom: 16px;
+}
+
+.brand-logo-block {
+  display: inline-flex;
+  flex-direction: column;
   align-items: center;
+  gap: 6px;
 }
 
 .brand-logo-wrap {
-  flex-shrink: 0;
   display: block;
   line-height: 0;
+}
+
+.brand-org-label {
+  margin: 0;
+  font-family: var(--font-org);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
 }
 
 .brand-logo {
   display: block;
   width: auto;
-  max-width: 320px;
-  height: 48px;
+  max-width: 280px;
+  height: 44px;
   object-fit: contain;
-  object-position: left center;
+  object-position: center;
 }
 
-.header-text {
-  flex: 1;
-  min-width: 0;
+.header-hero {
+  text-align: center;
+  padding: 4px 0 8px;
 }
 
 #site-title {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-family: var(--font-serif);
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-size: clamp(1.4rem, 3.2vw, 1.85rem);
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
 .subtitle {
-  margin: 0;
+  margin: 0 auto;
   font-size: 0.92rem;
   opacity: 0.88;
   max-width: 720px;
+  line-height: 1.65;
 }
 
 .header-stats {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .stat-chip {
@@ -836,6 +856,7 @@ body {
   font-size: 14px;
   line-height: 1.65;
   color: var(--text);
+  white-space: pre-line;
 }
 
 .detail-text {
@@ -847,6 +868,7 @@ body {
   background: var(--bg);
   border-radius: 8px;
   border: 1px solid var(--border);
+  white-space: pre-line;
 }
 
 .detail-steps {
@@ -921,14 +943,14 @@ body {
 }
 
 @media (max-width: 600px) {
-  .header-brand {
-    flex-direction: column;
-    align-items: flex-start;
+  .brand-logo {
+    max-width: 220px;
+    height: 38px;
   }
 
-  .brand-logo {
-    max-width: 100%;
-    height: 42px;
+  .brand-org-label {
+    font-size: 13px;
+    letter-spacing: 0.16em;
   }
 
   .site-header {
