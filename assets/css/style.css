@@ -16,7 +16,7 @@
   --shadow-card: 0 2px 12px rgba(12, 45, 90, 0.06);
   --radius: 12px;
   --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
-  --font-org: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --font-org: "Noto Serif SC",  "SimSun", "Source Han Serif SC", "Songti SC", "STSong", serif;
   --font-sans: "Noto Sans SC", "PingFang SC", sans-serif;
   --bank-color: var(--blue-700);
 }
